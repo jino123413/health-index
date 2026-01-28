@@ -4,7 +4,7 @@ import { Text, TextField, Button } from '@toss/tds-react-native';
 import { GoogleAdMob } from '@apps-in-toss/framework';
 import { calculateSalary, reverseCalculate, formatMoney, getTimeBreakdown, type SalaryResult } from '../utils/taxCalculator';
 
-const INTERSTITIAL_AD_ID = 'ait.v2.live.6a9582ec4e524364';
+const INTERSTITIAL_AD_ID = 'ait.v2.live.930a5440e2a5464b';
 const PRIMARY = '#1B9C85';
 
 type Mode = 'normal' | 'reverse';
