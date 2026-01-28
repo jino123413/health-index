@@ -56,9 +56,15 @@ export default function SalaryCalculator() {
     setIsCalculating(false);
   };
 
+  // 계산하기 (광고 없이 바로 실행)
   const handleCalculate = () => {
+    performCalculation();
+  };
+
+  // 새로 계산하기 (광고 표시 후 초기화)
+  const handleReset = () => {
     if (!adAvailableRef.current || !adLoadedRef.current) {
-      performCalculation();
+      resetCalculation();
       return;
     }
     try {
@@ -66,20 +72,25 @@ export default function SalaryCalculator() {
         options: { adGroupId: INTERSTITIAL_AD_ID },
         onEvent: (event: any) => {
           if (event.type === 'dismissed') {
-            performCalculation();
+            resetCalculation();
             adLoadedRef.current = false;
             loadAd();
           }
         },
         onError: () => {
-          performCalculation();
+          resetCalculation();
           adLoadedRef.current = false;
           loadAd();
         },
       });
     } catch {
-      performCalculation();
+      resetCalculation();
     }
+  };
+
+  const resetCalculation = () => {
+    setResult(null);
+    setInputValue('');
   };
 
   const handleModeSwitch = (newMode: Mode) => {
@@ -239,6 +250,15 @@ export default function SalaryCalculator() {
               </View>
             </View>
           )}
+
+          {/* 새로 계산하기 버튼 */}
+          <View style={styles.resetButtonContainer}>
+            <TouchableOpacity style={styles.resetButton} onPress={handleReset} activeOpacity={0.7}>
+              <Text typography="body2" fontWeight="bold" style={styles.resetButtonText}>
+                새로 계산하기
+              </Text>
+            </TouchableOpacity>
+          </View>
         </>
       )}
 
@@ -380,4 +400,12 @@ const styles = StyleSheet.create({
   timeLabel: { color: '#6B7684', marginBottom: 4 },
   notice: { paddingHorizontal: 4, marginTop: 4 },
   noticeText: { color: '#BBB', textAlign: 'center', lineHeight: 18 },
+  resetButtonContainer: { alignItems: 'center', marginBottom: 12 },
+  resetButton: {
+    backgroundColor: '#F4F4F4',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  resetButtonText: { color: '#6B7684' },
 });
