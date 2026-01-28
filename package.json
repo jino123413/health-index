@@ -1,8 +1,8 @@
 {
-  "name": "salary-calculator",
+  "name": "health-index",
   "version": "1.0.0",
   "private": true,
-  "description": "페이체크 - 연봉 실수령액 계산기",
+  "description": "헬스인덱스 - BMI 및 건강지수 계산기",
   "scripts": {
     "dev": "granite dev",
     "start": "react-native start",

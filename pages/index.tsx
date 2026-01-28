@@ -1,5 +1,5 @@
 import { createRoute } from '@granite-js/react-native';
-import SalaryCalculator from '../src/components/SalaryCalculator';
+import HealthCalculator from '../src/components/HealthCalculator';
 
 export const Route = createRoute('/', {
   validateParams: (params) => params,
@@ -7,5 +7,5 @@ export const Route = createRoute('/', {
 });
 
 export function HomePage() {
-  return <SalaryCalculator />;
+  return <HealthCalculator />;
 }

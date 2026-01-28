@@ -5,12 +5,12 @@ import { defineConfig } from '@granite-js/react-native/config';
 
 export default defineConfig({
   scheme: 'intoss',
-  appName: 'salary-calculator',
+  appName: 'health-index',
   plugins: [
     appsInToss({
       brand: {
-        displayName: '페이체크',
-        primaryColor: '#1B9C85',
+        displayName: '헬스인덱스',
+        primaryColor: '#00BFA5',
         icon: 'https://static.toss.im/appsintoss/73/10550764-5ac1-44e2-9ff3-ad78d8d2e71a.png',
         bridgeColorMode: 'basic',
       },
