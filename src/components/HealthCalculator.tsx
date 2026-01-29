@@ -11,7 +11,7 @@ import {
   type GoalSimulation,
 } from '../utils/healthCalculator';
 
-const INTERSTITIAL_AD_ID = 'ait.v2.live.6a9582ec4e524364'; // 임시 - 나중에 변경
+const INTERSTITIAL_AD_ID = 'ait.v2.live.8f9a6430b4a54d1b';
 const PRIMARY = '#00BFA5';
 
 type Gender = 'male' | 'female';
