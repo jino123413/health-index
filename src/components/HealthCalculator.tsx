@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text, TextField, Button } from '@toss/tds-react-native';
 import { GoogleAdMob } from '@apps-in-toss/framework';
 import {
@@ -26,7 +26,6 @@ export default function HealthCalculator() {
 
   const [result, setResult] = useState<HealthResult | null>(null);
   const [goalSimulation, setGoalSimulation] = useState<GoalSimulation | null>(null);
-  const [showAdModal, setShowAdModal] = useState(false);
 
   const adLoadedRef = useRef(false);
   const adAvailableRef = useRef(false);
@@ -80,18 +79,12 @@ export default function HealthCalculator() {
     performCalculation();
   };
 
-  // 새로 계산하기 버튼 클릭 시 광고 고지 모달 표시
+  // 새로 계산하기 (광고 표시 후 초기화)
   const handleReset = () => {
     if (!adAvailableRef.current || !adLoadedRef.current) {
       resetCalculation();
       return;
     }
-    setShowAdModal(true);
-  };
-
-  // 광고 시청 확인 후 실제 광고 표시
-  const handleConfirmAd = () => {
-    setShowAdModal(false);
     try {
       GoogleAdMob.showAppsInTossAdMob({
         options: { adGroupId: INTERSTITIAL_AD_ID },
@@ -111,11 +104,6 @@ export default function HealthCalculator() {
     } catch {
       resetCalculation();
     }
-  };
-
-  // 광고 없이 취소
-  const handleCancelAd = () => {
-    setShowAdModal(false);
   };
 
   const resetCalculation = () => {
@@ -350,6 +338,9 @@ export default function HealthCalculator() {
                 새로 계산하기
               </Text>
             </TouchableOpacity>
+            <Text typography="body3" style={styles.adNotice}>
+              광고 시청 후 새로운 계산을 시작합니다
+            </Text>
           </View>
         </>
       )}
@@ -360,43 +351,6 @@ export default function HealthCalculator() {
           계산 결과는 참고용이며, 정확한 건강 상담은 전문가와 상담하세요.
         </Text>
       </View>
-
-      {/* 광고 고지 모달 */}
-      <Modal
-        visible={showAdModal}
-        transparent
-        animationType="fade"
-        onRequestClose={handleCancelAd}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text typography="h5" fontWeight="bold" style={styles.modalTitle}>
-              광고 안내
-            </Text>
-            <Text typography="body2" style={styles.modalText}>
-              새로 계산하기를 진행하면 광고가 표시됩니다.{'\n'}광고 시청 후 새로운 계산을 시작할 수 있습니다.
-            </Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.modalCancelButton}
-                onPress={handleCancelAd}
-              >
-                <Text typography="body2" fontWeight="semiBold" style={styles.modalCancelText}>
-                  취소
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalConfirmButton}
-                onPress={handleConfirmAd}
-              >
-                <Text typography="body2" fontWeight="semiBold" style={styles.modalConfirmText}>
-                  광고 보고 계속하기
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   );
 }
@@ -517,52 +471,5 @@ const styles = StyleSheet.create({
   resetButtonText: { color: '#6B7684' },
   notice: { paddingHorizontal: 4, marginTop: 4 },
   noticeText: { color: '#BBB', textAlign: 'center', lineHeight: 18 },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  modalContent: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 24,
-    width: '100%',
-    maxWidth: 320,
-  },
-  modalTitle: {
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  modalText: {
-    textAlign: 'center',
-    color: '#6B7684',
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  modalCancelButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: '#F4F4F4',
-    alignItems: 'center',
-  },
-  modalCancelText: {
-    color: '#6B7684',
-  },
-  modalConfirmButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    backgroundColor: PRIMARY,
-    alignItems: 'center',
-  },
-  modalConfirmText: {
-    color: '#FFFFFF',
-  },
+  adNotice: { color: '#999', textAlign: 'center', marginTop: 8, fontSize: 12 },
 });
